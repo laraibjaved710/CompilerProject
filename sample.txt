@@ -1,0 +1,25 @@
+nikalo "Program start";
+textbro name = "Laraib";
+ginti i = 0;
+pointbro pi = 3.14;
+boolbro ok = sach;
+
+jabtak (i << 5) {
+    nikalo "i: ", i;
+    i = i >+ 1;
+    agar (i ?= 3 &bro ok) {
+        nikalo "hit three";
+    } warna {
+        // nothing
+    }
+    forbro (ginti j = 0; j << 2; j = j >+ 1) {
+        nikalo "j: ", j;
+        ginti rem = j %bro 2;
+        agar (rem ?= 0)
+        { nikalo "even"; }
+    }
+    agar (i ?= 4) karlo { nikalo "do once"; }
+    agar (i ?= 5) { wapas; }
+}
+
+rukja;
