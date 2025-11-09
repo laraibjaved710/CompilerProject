@@ -16,14 +16,15 @@ void print_error(const char *lexeme) {
 }
 %}
 
-FLOAT           [0-9]*\.[0-9]+
+FLOAT           [0-9]*\.[0-9]+([eE][+-]?[0-9]+)?
 INT             [0-9]+
 STRING          \"([^\\\"]|\\.)*\"
-ID_START     [A-Za-z_]
-ID_CONT      [A-Za-z0-9_]
-WHITESPACE   [ \t\r\n]+
-COMMENT_SL   "//".*
-COMMENT_ML   "/\*([^*]|\*+[^*/])*\*+/"
+CHAR            \'([^\\\n]|\\.)\'
+ID_START        [A-Za-z_]
+ID_CONT         [A-Za-z_]
+WHITESPACE      [ \t\r\n]+
+COMMENT_SL      "//".*
+COMMENT_ML      "/\*([^*]|\*+[^*/])*\*+/"
 
 %%
 
@@ -55,12 +56,10 @@ COMMENT_ML   "/\*([^*]|\*+[^*/])*\*+/"
 ";"         { print_token("SEMI", yytext); }
 ","         { print_token("COMMA", yytext); }
 
-\'([^\\\n]|\\.)\'       { print_token("CHAR", yytext); }
-
-{FLOAT}                         { print_token("FLOAT", yytext); return 26; }
-{INT}                           { print_token("INTEGER", yytext); return 27; }
-{STRING}                        { print_token("STRING", yytext); return 28; }
-
+{STRING}    { print_token("STRING", yytext); }
+{CHAR}      { print_token("CHAR", yytext); }
+{FLOAT}     { print_token("FLOAT", yytext); }
+{INT}       { print_token("INTEGER", yytext); }
 
 {ID_START}{ID_CONT}*    { print_token("IDENTIFIER", yytext); }
 
@@ -99,7 +98,6 @@ int main(int argc, char *argv[]) {
     fclose(tokenFile);
     fclose(errorFile);
 
-    printf("Lexical analysis completed!\nTokens -> tokens.txt\nErrors -> errors.txt\n");
     return 0;
 }
 
